@@ -1,0 +1,19 @@
+{
+  "map": "Town10HD_Opt",
+  "duration_s": 600,
+  "realtime": true,
+  "traffic_count": 0,
+  "target_speed_kmh": 20,
+  "ignore_traffic_lights": false,
+  "ignore_stop_signs": false,
+  "video": {
+    "view": "TPP",
+    "res": [
+      1920,
+      1080
+    ],
+    "fps": 20,
+    "fov": 90
+  },
+  "tm_port": 8000
+}
