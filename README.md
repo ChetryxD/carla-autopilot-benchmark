@@ -1,6 +1,5 @@
 
 
-https://github.com/user-attachments/assets/1888b9a4-673c-4f68-8f55-0d109ec8c203
 
 CARLA TM Autopilot Benchmark Sweep (CARLA 0.9.16)
 Third-Person Video + JSON Metrics
