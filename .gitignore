@@ -1,16 +1,201 @@
-# python
-__pycache__/
-*.pyc
-.venv/
-.env
+# CARLA TM Autopilot Benchmark Sweep (0.9.16) — Third-Person Video + JSON Metrics
 
-# carla project heavy folders
-datasets/
-dataset_run_*/
-checkpoints/
-runs/**/video.*
-runs/**/*.avi
-runs/**/*.mp4
+## Project Overview
+This repository benchmarks **CARLA’s Traffic Manager (TM) autopilot** in a controlled, repeatable way on **CARLA 0.9.16**. It runs the ego vehicle in **Town10HD_Opt** across a grid of **traffic density × target speed** configurations, records key driving metrics (speed, distance, collisions, interventions), and optionally saves a **high-quality third-person (TPP) video** for each run. The output is designed to be clean and GitHub-ready: every run produces a self-contained folder with `config.json`, `summary.json`, and (optionally) a video file.
 
-# logs
-*.log
+---
+
+## What this repo does
+
+### ✅ 1) TM autopilot benchmark sweep (traffic × speed)
+The main script runs a sweep over:
+- **Traffic counts:** `0, 10, 30`
+- **Target speeds:** `20, 30, 40 km/h`
+
+So you get **9 runs total**, each stored in its own timestamped folder for easy comparison.
+
+### ✅ 2) Saves `summary.json` per run
+Each run generates a `summary.json` including:
+- duration, distance, average speed  
+- target speed & traffic count  
+- collisions  
+- “stuck handling” events (lane change / autopilot reset if included)  
+- video settings used  
+
+This makes it easy to later plot or compare results.
+
+### ✅ 3) Saves TPP video (optional)
+If `opencv-python` and `numpy` are installed, the script records a **third-person camera view** and saves it per run as:
+
+- `video.avi` (MJPG codec by default)
+
+This view is intended to show:
+- surrounding map context
+- signals/traffic lights
+- other vehicles
+- ego behavior (following, braking, hesitation)
+
+---
+
+## Setup
+
+### Requirements
+- **CARLA version:** `0.9.16`
+- Python environment with CARLA PythonAPI available
+- Your CARLA server must be running first
+
+---
+
+### Option A: Conda environment (recommended)
+From the repo root:
+```bash
+conda env create -f environment.yml
+conda activate carla-ai
+
+Option B: pip install
+pip install -r requirements.txt
+
+If you want video recording, ensure:
+pip install opencv-python numpy
+CARLA PythonAPI path (important)
+
+Your script should be able to import carla.
+
+If your CARLA PythonAPI is not installed into the environment, you must ensure your CARLA PythonAPI/carla folder is on your Python path.
+
+Typical CARLA path example:C:\Users\<you>\Downloads\CARLA_0.9.16\PythonAPI\carla
+
+Run CARLA server first
+Before running the benchmark, start CARLA:
+CarlaUE4.exe
+
+Make sure it is listening on:
+127.0.0.1:2000
+You can verify the port is open with:
+netstat -ano | findstr :2000
+
+Run
+From the repo root:
+python scripts/40_benchmark_sweep_tm_autopilot_star_v3.py
+This runs the full 9-run sweep:
+traffic: 0,10,30
+speed: 20,30,40
+
+Outputs
+Each run creates a timestamped folder like:
+runs/
+  20251230_145147_tm_t20_cars0/
+    config.json
+    summary.json
+    video.avi   (optional)
+Files explained
+config.json
+
+Stores run configuration:
+
+mode
+
+duration
+
+target speed
+
+traffic count
+
+video resolution/fps
+
+TM port
+
+summary.json
+
+Stores final metrics:
+
+total distance
+
+avg speed (overall + moving-only if enabled)
+
+collisions
+
+route refreshes / stuck events (if enabled)
+
+runtime stats
+
+video.avi (optional)
+
+Third-person camera recording for review and presentation.
+
+Results
+✅ Best run (example)
+
+Paste your best run summary here (replace with your real one):
+{
+  "mode": "tm_autopilot",
+  "map": "Carla/Maps/Town10HD_Opt",
+  "duration_s": 300,
+  "wall_time_s": 300.03,
+  "distance_m": 767.64,
+  "avg_speed_mps": 2.559,
+  "avg_speed_kmh": 9.21,
+  "target_speed_kmh": 25,
+  "traffic_count": 20,
+  "collisions": 1,
+  "route_refreshes": 0,
+  "creep_assists": 1,
+  "offroad_percent": 0.0,
+  "ignore_traffic_lights": false,
+  "ignore_stop_signs": false,
+  "video_view": "TPP",
+  "video_res": [1920, 1080],
+  "video_fps": 20,
+  "video_file": "video.mp4",
+  "tm_port": 8000
+}
+Known limitations
+1) TM may stop behind vehicles / hesitate at intersections
+
+Traffic Manager autopilot can:
+
+stop behind a vehicle even when a lane change is possible
+
+wait longer than expected at intersections
+
+sometimes hesitate or choose awkward turns
+
+This is normal for TM behavior in dense urban maps.
+
+2) GPU crash: DXGI_ERROR_DEVICE_REMOVED
+
+If CARLA crashes with:
+
+DXGI_ERROR_DEVICE_REMOVED
+
+This is usually a GPU driver / VRAM issue.
+
+✅ Fixes:
+
+reduce recording resolution (e.g. 1280×720)
+
+reduce FPS (e.g. 15)
+
+reduce traffic count
+
+avoid running other GPU-heavy apps
+
+update GPU drivers
+
+Repository structure (suggested)
+carla-ai-projects/
+  scripts/
+  runs/                      # generated outputs (not all should be pushed to git)
+  docs/
+    media/                   # screenshots or short demo video
+    results/                 # best summaries
+  requirements.txt
+  environment.yml
+  README.md
+  .gitignore
+
+
+
+
+
+
