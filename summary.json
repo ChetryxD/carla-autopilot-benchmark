@@ -1,0 +1,25 @@
+{
+  "mode": "tm_autopilot",
+  "map": "Carla/Maps/Town10HD_Opt",
+  "duration_s": 300,
+  "wall_time_s": 300.03,
+  "distance_m": 767.64,
+  "avg_speed_mps": 2.559,
+  "avg_speed_kmh": 9.21,
+  "target_speed_kmh": 25,
+  "traffic_count": 20,
+  "collisions": 1,
+  "route_refreshes": 0,
+  "creep_assists": 1,
+  "offroad_percent": 0.0,
+  "ignore_traffic_lights": false,
+  "ignore_stop_signs": false,
+  "video_view": "TPP",
+  "video_res": [
+    1920,
+    1080
+  ],
+  "video_fps": 20,
+  "video_file": "video.mp4",
+  "tm_port": 8000
+}

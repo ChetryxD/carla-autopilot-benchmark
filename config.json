@@ -1,0 +1,9 @@
+{
+  "mode": "tm_autopilot",
+  "traffic_count": 20,
+  "target_speed_kmh": 25,
+  "duration_s": 300,
+  "fixed_dt": 0.05,
+  "seed": 42,
+  "map": "Carla/Maps/Town10HD_Opt"
+}
