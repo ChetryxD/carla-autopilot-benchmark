@@ -1,0 +1,10 @@
+name: carla-ai
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - pip:
+      - opencv-python
+      - pygame
